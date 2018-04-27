@@ -1,9 +1,15 @@
 [local]
-mysql_host=127.0.0.1
-mysql_port=3306
-mysql_user=root
-mysql_password=
-mysql_db=
+project_name=collect_ip
+
+ssdb_host=127.0.0.1
+ssdb_port=8888
+
+ssdb_key_black_list=ssdb:local:ip:pool:black:list:%(project_name)s:
+
+ssdb_key_black_list_check=ssdb:local:ip:pool:black:list:check:%(project_name)s:
+
+ssdb_key_ip_pool=ssdb:local:ip:pool:%(project_name)s
+
 
 [server]
 mysql_host=127.0.0.1
