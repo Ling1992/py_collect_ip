@@ -97,7 +97,7 @@ if __name__ == '__main__':
         'Pragma': 'no-cache'
     }
 
-    url = "http://www.xicidaili.com/nn/{}"
+    url = config.get('local', 'url')
     page = 1
     while count_ips() <= 2000 and helper.if_exists_pid_file():
         response = request.get(url.format(page), headers=headers)

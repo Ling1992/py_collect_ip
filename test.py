@@ -41,5 +41,6 @@ if __name__ == '__main__':
     if a == '5':
         print('今天要clear!!!')
 
+    print(config.get('local', 'url'))
     mysql.close()
     pass
