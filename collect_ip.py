@@ -42,13 +42,31 @@ def count_ips():
     return total
 
 
+def delete_invalid_ips():
+    cursor = mysql.cursor()
+    try:
+        cursor.execute(delete_ips_sql)
+        mysql.commit()
+    except Exception as e:
+        mysql.rollback()
+        print(delete_ips_sql)
+        print('Exception :{}'.format(e))
+        raise Exception(e)
+    finally:
+        cursor.close()
+
+
 if __name__ == '__main__':
 
+    # 预处理 pid文件 clear 无效ip
     if helper.if_exists_pid_file():
         helper.delete_pid_file()
         time.sleep(60)
-
     helper.create_pid_file()
+
+    week = time.strftime('%w', time.localtime())
+    if week == '5':  # 周五
+        delete_invalid_ips()
 
     # 初始化 配置文件 ssdb mysql request
     config = configparser.ConfigParser()
@@ -67,6 +85,7 @@ if __name__ == '__main__':
 
     insert_ip_sql = "INSERT INTO collect_ips(host, port, type) VALUES('{host}', {port}, '{type}')"
     count_ip_sql = "SELECT COUNT(*) FROM collect_ips"
+    delete_ips_sql = "DELETE FROM collect_ips WHERE status = 0"
 
     headers = {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
