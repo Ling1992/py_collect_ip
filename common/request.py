@@ -23,7 +23,7 @@ class Request(object):
     def get_proxy(self):
         # get ip
         if self.use_proxy and self.change_proxy:
-            proxy_info = self.ssdb.qpop(self.config.get('local', 'ssdb_key_ip_pool'))
+            proxy_info = self.ssdb.qpop(self.config.get('local', 'ssdb_queue_ip_pool'))
             self.agent = helper.get_random_agent()
             if not proxy_info:
                 print('proxy_info 不存在 ！！！')
@@ -31,8 +31,7 @@ class Request(object):
                 pass
             else:
                 self.proxy_addr = '{}://{}:{}'.format(proxy_info['type'], proxy_info['host'], proxy_info['port'])
-                self.ssdb.set(self.config.get('local', 'ssdb_key_black_list') + proxy_info['id'], self.proxy_addr)
-                self.ssdb.set(self.config.get('local', 'ssdb_key_black_list_check') + proxy_info['id'], self.proxy_addr)
+                self.ssdb.set(self.config.get('local', 'ssdb_kv_black_list') + proxy_info['id'], self.proxy_addr)
 
     def get(self, url, retries=3, interval=5, **kwargs):
         if retries < 0:

@@ -99,7 +99,8 @@ if __name__ == '__main__':
 
     url = config.get('local', 'url')
     page = 1
-    while count_ips() <= 2000 and helper.if_exists_pid_file():
+    threshold = 2000
+    while count_ips() <= threshold and helper.if_exists_pid_file():
         response = request.get(url.format(page), headers=headers)
         if response.content:
             html = helper.str_decode(response.content)
